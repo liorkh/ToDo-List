@@ -1,0 +1,6 @@
+<div class="task-list-container">
+    <add-edit-task></add-edit-task>
+    <div *ngFor="let task of tasks" class="task-wrapper">
+      <task-item [task]="task"></task-item>
+    </div>
+</div>

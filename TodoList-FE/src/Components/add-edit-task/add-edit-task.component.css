@@ -1,0 +1,49 @@
+.add-edit-task {
+  display: flex; /* Use flexbox to align the input and button */
+  flex-direction: column; /* Stack the input and button vertically */
+  gap: 12px; /* Space between the input and button */
+  padding: 16px;
+  background-color: #fff; /* White background for the task input area */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Soft shadow to lift the input area */
+  width: 100%;
+  max-width: 400px; /* Increased max-width */
+  margin: 0 auto; /* Center the container */
+}
+
+.add-edit-task input {
+  padding: 12px; /* Increased padding for better spacing */
+  font-size: 1.1em;
+  border: 1px solid #ddd;
+  border-radius: 4px; /* Rounded corners */
+  outline: none; /* Remove default outline */
+  transition: border-color 0.3s ease;
+  background-color: #f9f9f9; /* Light background for the input */
+  width: 100%; /* Ensures the input fills the width of its container */
+  box-sizing: border-box; /* Prevents overflow and ensures the padding is contained */
+}
+
+.add-edit-task input:focus {
+  border-color: #4caf50; /* Green border when focused */
+  background-color: #fff; /* Lighter background on focus */
+}
+
+.add-edit-task button {
+  padding: 12px;
+  font-size: 1.1em;
+  background-color: #4caf50; /* Green background */
+  color: white;
+  border: none;
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-edit-task button:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+.add-edit-task button:disabled {
+  background-color: #ddd; /* Disabled button with a grey background */
+  cursor: not-allowed;
+}

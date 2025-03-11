@@ -1,0 +1,17 @@
+<div class="task-item-container">
+    <div class="task-upper-items">
+    
+        <span *ngIf="!isEditing; else editMode" class="task-name">{{ task.name }}</span>
+    
+        <ng-template #editMode>
+            <input [(ngModel)]="task.name" (blur)="saveTask()" [autofocus]="isEditing" class="task-input" placeholder="Enter task name" />
+        </ng-template>
+    </div>
+    <div class="task-actions">
+      <button mat-raised-button color="warn" (click)="deleteTask()" class="delete-btn">Delete</button>
+      <mat-checkbox [(ngModel)]="task.completed" (change)="toggleCompleted()" class="task-checkbox"></mat-checkbox>
+      <button mat-raised-button color="primary" (click)="editTask()" class="edit-btn">{{ isEditing ? 'Save' : 'Edit' }}</button>
+    </div>
+  </div>
+  
+  
