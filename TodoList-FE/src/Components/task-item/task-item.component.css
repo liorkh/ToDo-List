@@ -23,9 +23,6 @@
     text-decoration: line-through;
     color: #888;
 }
-span{
-    max-height: 50px;
-}
 
 /* Removed the border completely from the input field */
 .task-input {
