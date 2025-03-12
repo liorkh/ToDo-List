@@ -13,7 +13,7 @@ const taskSchema = new mongoose.Schema<ITask>({
 });
 
 // Add a virtual for 'id' to be mapped from '_id'
-taskSchema.virtual('id').get(function (this: ITask) {  // Explicitly type `this` as ITask
+taskSchema.virtual('id').get(function (this: ITask) {
     return (this._id as Types.ObjectId).toHexString(); 
 });
 
