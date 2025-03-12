@@ -69,10 +69,9 @@ The following API routes are available:
 - PUT /todos/:id: Update a TODO task by ID
 - DELETE /todos/:id: Delete a TODO task by ID
 
-### 5. Technologies Used
--  Backend: Node.js, Express.js, MongoDB
-- Frontend: Angular19, SCSS
+### 5. Architecture Decision
+- I used the *Repository Pattern* to manage database interactions. This helps keep things clean by separating data access logic from the rest of the app. It makes the code easier to maintain, test, and swap out the database with ease.
 
-### 6. Troubleshooting
-If you face any issues, check the .env file and make sure your database is running.
-Ensure that both the frontend and backend are running and that the frontend is pointing to the correct backend URL.
+- I used a *Singleton* for Socket.IO. This ensures there's only one instance of Socket.IO running, which helps avoid conflicts and keeps things efficient. It simplifies event broadcasting across clients and ensures consistent communication throughout the app.
+
+- I used the *Service Pattern* in Angular to keep business logic separate from components. This way, components focus on displaying data, while services handle things like API calls and data processing. It makes the code cleaner, reusable, and easier to maintain.
