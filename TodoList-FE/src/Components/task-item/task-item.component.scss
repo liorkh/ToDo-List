@@ -1,5 +1,4 @@
-// Import colors
-@import '../../colors.scss';
+@use '../../colors' as colors;
 
 .task-item-container {
     display: flex;
@@ -14,7 +13,7 @@
 
 .task-name {
     font-size: 1.2em;
-    color: $text-color;
+    color: colors.$text-color;
     max-height: 70px;
     overflow-y: auto;
     display: inline-block;
@@ -22,7 +21,7 @@
 
 .task-name.completed {
     text-decoration: line-through;
-    color: $completed-text-color;
+    color: colors.$completed-text-color;
 }
 
 .task-input {
@@ -38,7 +37,7 @@
 }
 
 .task-input:focus {
-    background-color: $focus-bg-color;
+    background-color: colors.$focus-bg-color;
 }
 
 .task-actions {
@@ -59,33 +58,33 @@
 }
 
 .edit-btn {
-    background-color: $edit-btn-bg-color;
+    background-color: colors.$edit-btn-bg-color;
     color: white;
 }
 
 .edit-btn:hover {
-    background-color: $edit-btn-hover-bg-color;
+    background-color: colors.$edit-btn-hover-bg-color;
 }
 
 .delete-btn {
-    background-color: $delete-btn-bg-color;
+    background-color: colors.$delete-btn-bg-color;
     color: white;
 }
 
 .delete-btn:hover {
-    background-color: $delete-btn-hover-bg-color;
+    background-color: colors.$delete-btn-hover-bg-color;
 }
 
 .delete-btn:disabled {
-    background-color: $disabled-bg-color;
-    color: $disabled-text-color;
+    background-color: colors.$disabled-bg-color;
+    color: colors.$disabled-text-color;
     cursor: not-allowed;
     opacity: 0.6;
 }
 
 .edit-btn:disabled {
-    background-color: $disabled-bg-color;
-    color: $disabled-text-color;
+    background-color: colors.$disabled-bg-color;
+    color: colors.$disabled-text-color;
     cursor: not-allowed;
     opacity: 0.6;
 }

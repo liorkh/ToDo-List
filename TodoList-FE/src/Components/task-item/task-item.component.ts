@@ -19,19 +19,23 @@ export class TaskItemComponent {
   @Input() task!: Task;
   isEditing = new BehaviorSubject<boolean>(false);
 
+
   constructor(private taskService: TaskService) { }
 
-  toggleCompleted() {
-    this.taskService.updateTask(this.task).subscribe();
+  toggleCompleted(): void {
+    this.taskService.updateTask(this.task);
+
   }
 
-  deleteTask() {
-    this.taskService.deleteTask(this.task.id).subscribe();
+  deleteTask(): void {
+    this.taskService.deleteTask(this.task.id);
+
   }
 
-  editTask() {
+  editTask(): void {
     this.task.editing = !this.isEditing.value;
     this.isEditing.next(!this.isEditing.value);
-    this.taskService.updateTask(this.task).subscribe();
+    this.taskService.updateTask(this.task);
+
   }
 }

@@ -1,12 +1,12 @@
-@import '../../colors.scss';
+@use '../../colors' as colors;
 
 .task-wrapper {
   display: inline-block;
   margin: 12px;
   padding: 16px;
-  background-color: $task-wrapper-bg-color;
-  border: 1px solid $task-wrapper-border-color;
-  box-shadow: 2px 2px 10px $task-wrapper-shadow-color;
+  background-color: colors.$task-wrapper-bg-color;
+  border: 1px solid colors.$task-wrapper-border-color;
+  box-shadow: 2px 2px 10px colors.$task-wrapper-shadow-color;
   border-radius: 8px;
   width: 220px;
   height: 150px;
@@ -14,7 +14,6 @@
   vertical-align: top;
   overflow: hidden;
 }
-
 
 .task-wrapper:hover {
   transform: translateY(-5px);

@@ -13,19 +13,19 @@ import { MatInputModule } from '@angular/material/input';
   styleUrl: './add-edit-task.component.scss'
 })
 export class AddEditTaskComponent {
-  task: Task = { id:'',editing: false, completed: false, title: '' };
+  task: Task = { id: '', editing: false, completed: false, title: '' };
 
   constructor(private taskService: TaskService) { }
 
 
-  saveTask() {
+  saveTask() : void {
     if (this.task.title.trim()) {
-      this.taskService.addTask(this.task).subscribe();
+      this.taskService.addTask(this.task);
       this.resetForm();
     }
   }
 
   resetForm(): void {
-    this.task = { id:'',editing: false, completed: false, title: '' };
+    this.task = { id: '', editing: false, completed: false, title: '' };
   }
 }

@@ -1,4 +1,4 @@
-@import '../../colors.scss';
+@use '../../colors' as colors;
 
 .add-edit-task {
   display: flex;
@@ -13,26 +13,26 @@
 .add-edit-task input {
   padding: 12px;
   font-size: 1.1em;
-  border: 1px solid $border-color;
+  border: 1px solid colors.$border-color;
   border-radius: 4px;
-  background-color: $input-background-color;
+  background-color: colors.$input-background-color;
   box-sizing: border-box;
 }
 
 .add-edit-task input:focus {
-  border-color: $focus-border-color;
+  border-color: colors.$focus-border-color;
 }
 
 .add-edit-task button {
   padding: 12px;
   font-size: 1.1em;
-  background-color: $button-bg-color;
-  color: $button-text-color;
+  background-color: colors.$button-bg-color;
+  color: colors.$button-text-color;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .add-edit-task button:hover {
-  background-color: $button-hover-bg-color;
+  background-color: colors.$button-hover-bg-color;
 }
