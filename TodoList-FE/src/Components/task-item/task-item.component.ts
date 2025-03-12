@@ -12,36 +12,26 @@ import { BehaviorSubject } from 'rxjs';
   selector: 'task-item',
   imports: [CommonModule, FormsModule, MatFormFieldModule, MatCheckbox, MatInputModule],
   templateUrl: './task-item.component.html',
-  styleUrls: ['./task-item.component.css'],
+  styleUrls: ['./task-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaskItemComponent {
   @Input() task!: Task;
-  isEditing = new BehaviorSubject<boolean>(false);  // Flag to toggle edit mode
+  isEditing = new BehaviorSubject<boolean>(false);
 
   constructor(private taskService: TaskService) { }
 
-  // Toggle the completion of a task
   toggleCompleted() {
     this.taskService.updateTask(this.task).subscribe();
   }
 
-  // Delete the task
   deleteTask() {
     this.taskService.deleteTask(this.task.id).subscribe();
   }
 
-  // Toggle the edit mode to allow editing the task name
   editTask() {
-    if (this.isEditing.value) {
-      // If the task is in editing mode, save the updated task
-      this.isEditing.next(false);
-      this.task.editing = false;
-    } else {
-      // Enter edit mode
-      this.isEditing.next(true);
-      this.task.editing = true;
-    }
+    this.task.editing = !this.isEditing.value;
+    this.isEditing.next(!this.isEditing.value);
     this.taskService.updateTask(this.task).subscribe();
   }
 }

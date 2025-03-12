@@ -12,7 +12,7 @@ taskSchema.virtual('id').get(function () {
 
 taskSchema.set('toJSON', {
     virtuals: true,
-    transform: (ret) => {
+    transform: (doc, ret) => {
         delete ret._id;
     },
 });

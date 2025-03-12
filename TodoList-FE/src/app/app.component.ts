@@ -5,7 +5,7 @@ import { TaskListComponent } from '../Components/task-list/task-list.component';
   selector: 'app-root',
   imports: [TaskListComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'TodoList-FE';

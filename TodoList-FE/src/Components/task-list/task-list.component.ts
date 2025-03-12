@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   selector: 'task-list',
   imports: [TaskItemComponent,AddEditTaskComponent,CommonModule],
   templateUrl: './task-list.component.html',
-  styleUrl: './task-list.component.css'
+  styleUrl: './task-list.component.scss'
 })
 export class TaskListComponent implements OnInit {
   tasks: Task[] = [];
@@ -18,12 +18,11 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit(): void {
     this.taskService.getTasks().subscribe((tasks) => {
-      this.tasks = tasks; // Initial load of tasks
+      this.tasks = tasks;
     });
 
-    // Subscribe to the tasks subject for real-time updates
     this.taskService.tasksSubject.subscribe((tasks) => {
-      this.tasks = tasks; // Update task list with real-time changes
+      this.tasks = tasks; 
     });
   }
 }

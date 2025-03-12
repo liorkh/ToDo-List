@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
   selector: 'add-edit-task',
   imports: [CommonModule, FormsModule, MatFormFieldModule, MatInputModule],
   templateUrl: './add-edit-task.component.html',
-  styleUrl: './add-edit-task.component.css'
+  styleUrl: './add-edit-task.component.scss'
 })
 export class AddEditTaskComponent {
   task: Task = { id:'',editing: false, completed: false, title: '' };
