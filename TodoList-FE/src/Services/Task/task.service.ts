@@ -35,15 +35,13 @@ export class TaskService {
   }
 
   getTasks(): Observable<Task[]> {
-    const headers = this.getHeaders();
-    const options = { headers };
-    return this.http.get<Task[]>(this.apiUrl, options).pipe(
+    return this.http.get<Task[]>(this.apiUrl).pipe(
       tap(tasks => this.tasksSubject.next(tasks))
     );
   }
 
   addTask(task: Task): Observable<Task> {
-    return this.http.post<Task>(this.apiUrl, task, { headers: this.getHeaders() }).pipe(
+    return this.http.post<Task>(this.apiUrl, task).pipe(
       tap(newTask => {
         this.socket.emit(TaskEvents.TaskAdded, newTask);  
       })
@@ -59,7 +57,7 @@ export class TaskService {
   }
 
   deleteTask(taskId: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${taskId}`, { headers: this.getHeaders() }).pipe(
+    return this.http.delete<void>(`${this.apiUrl}/${taskId}`).pipe(
       tap(() => {
         this.socket.emit(TaskEvents.TaskDeleted, { id: taskId }); 
       })
