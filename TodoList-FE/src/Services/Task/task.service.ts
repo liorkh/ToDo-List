@@ -3,13 +3,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { io } from 'socket.io-client';
 import { Task } from '../../Models/task.model';
+import { config } from '../../app/config/config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
-  private apiUrl = 'http://localhost:5000/tasks';
-  private socket = io('http://localhost:5000');
+  private apiUrl = config.apiUrl;  // Use the apiUrl from config
+  private socket = io(config.socketUrl);  // Use the socketUrl from config
 
   tasksSubject = new BehaviorSubject<Task[]>([]);
   socketId: string | undefined;
