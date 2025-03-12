@@ -14,7 +14,7 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
     try {
-        await getTasks(req, res);
+        await getTasks(res);
     } catch (err) {
         res.status(500).json({ message: 'Something went wrong' });
     }

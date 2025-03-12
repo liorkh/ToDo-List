@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
 import Task from '../models/taskModel';
+import { Request, Response } from 'express';
 import { getSocketIO } from '../models/socketIO';
 
 export const createTask = async (req: Request, res: Response) => {
@@ -16,14 +16,14 @@ export const createTask = async (req: Request, res: Response) => {
     const io = getSocketIO();
     io.emit('taskAdded', newTask);
 
-    res.status(201).json(newTask);
+    res.status(201);
   } catch (err) {
     console.error('Error creating task:', err);
     res.status(400).json({ message: err.message });
   }
 };
 
-export const getTasks = async (req: Request, res: Response) => {
+export const getTasks = async (res: Response) => {
   try {
     const tasks = await Task.find().select('-__v');
     res.status(200).json(tasks);
@@ -59,7 +59,7 @@ export const updateTask = async (req: Request, res: Response) => {
       });
     }
 
-    res.status(200).json(updatedTask);
+    res.status(200);
   } catch (err) {
     console.error('Error updating task:', err);
     res.status(400).json({ message: err.message });
@@ -79,7 +79,7 @@ export const deleteTask = async (req: Request, res: Response) => {
     const io = getSocketIO();
     io.emit('taskDeleted', deletedTask);
 
-    res.status(200).json(deletedTask);
+    res.status(200);
   } catch (err) {
     console.error('Error deleting task:', err);
     res.status(400).json({ message: err.message });

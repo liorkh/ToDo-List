@@ -6,15 +6,13 @@ const taskSchema = new mongoose.Schema({
     editing: { type: Boolean, default: false },
 });
 
-
 taskSchema.virtual('id').get(function () {
     return this._id.toHexString();
 });
 
-
 taskSchema.set('toJSON', {
     virtuals: true,
-    transform: (doc, ret) => {
+    transform: (ret) => {
         delete ret._id;
     },
 });

@@ -1,9 +1,9 @@
 import http from 'http';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import app from './app';
-import { corsOptions, initializeSocketIO } from './models/socketIO';
+import app from './models/app';
 import connectDB from './models/db';
+import { corsOptions, initializeSocketIO } from './models/socketIO';
 
 dotenv.config({ path: './dev.env' });
 
@@ -12,8 +12,7 @@ initializeSocketIO(server);
 connectDB();
 
 app.use(cors(corsOptions));
-
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
