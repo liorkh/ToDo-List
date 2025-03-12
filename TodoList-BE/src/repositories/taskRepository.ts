@@ -1,5 +1,5 @@
 // taskRepository.ts
-import {Task, ITask } from '../models/taskModel';
+import {Task, ITask } from '../models/task';
 
 class TaskRepository {
 
