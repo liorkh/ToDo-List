@@ -77,3 +77,17 @@
 .delete-btn:hover {
     background-color: #e53935; /* Darker red on hover */
 }
+
+.delete-btn:disabled {
+    background-color: #ffebee; /* Lighter red for disabled */
+    color: #9e9e9e; /* Light gray text color */
+    cursor: not-allowed; /* Change cursor to indicate it's disabled */
+    opacity: 0.6; /* Slightly reduce opacity */
+}
+
+.edit-btn:disabled {
+    background-color: #c8e6c9; /* Lighter green for disabled */
+    color: #9e9e9e; /* Light gray text color */
+    cursor: not-allowed; /* Change cursor to indicate it's disabled */
+    opacity: 0.6; /* Slightly reduce opacity */
+}

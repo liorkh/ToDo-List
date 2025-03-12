@@ -1,17 +1,24 @@
 <div class="task-item-container">
-    <div class="task-upper-items">
-    
-        <span *ngIf="!isEditing; else editMode" class="task-name">{{ task.name }}</span>
-    
-        <ng-template #editMode>
-            <input [(ngModel)]="task.name" (blur)="saveTask()" [autofocus]="isEditing" class="task-input" placeholder="Enter task name" />
-        </ng-template>
-    </div>
-    <div class="task-actions">
-      <button mat-raised-button color="warn" (click)="deleteTask()" class="delete-btn">Delete</button>
-      <mat-checkbox [(ngModel)]="task.completed" (change)="toggleCompleted()" class="task-checkbox"></mat-checkbox>
-      <button mat-raised-button color="primary" (click)="editTask()" class="edit-btn">{{ isEditing ? 'Save' : 'Edit' }}</button>
-    </div>
+  <div class="task-upper-items">
+    <!-- Task name displayed when not editing -->
+    <span *ngIf="!(isEditing|async); else editMode" class="task-name">{{ task.title }}</span>
+
+    <!-- Task name input field displayed when editing -->
+    <ng-template #editMode>
+      <input [(ngModel)]="task.title" class="task-input" placeholder="Enter task title" />
+    </ng-template>
   </div>
-  
-  
+
+  <div class="task-actions">
+    <!-- Delete button, disabled if the current user is not editing or if the task is being edited by someone else -->
+    <button mat-raised-button color="warn" (click)="deleteTask()" class="delete-btn" [disabled]="task.editing && !(isEditing | async)">Delete</button>
+
+    <!-- Checkbox for task completion -->
+    <mat-checkbox [(ngModel)]="task.completed" [disabled]="task.editing && !(isEditing | async)" (change)="toggleCompleted()" class="task-checkbox"></mat-checkbox>
+
+    <!-- Edit button, disabled if the current user is not editing or if the task is being edited by someone else -->
+    <button mat-raised-button color="primary" (click)="editTask()" class="edit-btn" [disabled]="task.editing && !(isEditing | async)">
+      {{ (isEditing | async) ? 'Save' : 'Edit' }}
+    </button>
+  </div>
+</div>

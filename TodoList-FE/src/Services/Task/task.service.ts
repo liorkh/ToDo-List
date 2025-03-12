@@ -1,59 +1,105 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, tap } from 'rxjs';
+import { io } from 'socket.io-client';
 import { Task } from '../../Models/task.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
-  private tasksSubject = new BehaviorSubject<Task[]>([
-    { id: '1', name: 'Task 1', completed: false },
-    { id: '2', name: 'Task 2', completed: false },
-    { id: '3', name: 'Task 3', completed: true },
-  ]);
+  private apiUrl = 'http://localhost:5000/tasks'; // Your backend API endpoint
+  private socket = io('http://localhost:5000'); // Connect to the backend Socket.IO server
 
-  private editingTaskSubject = new BehaviorSubject<Task | null>(null);
+  tasksSubject = new BehaviorSubject<Task[]>([]); // Holds the task list
+  socketId: string | undefined;
 
-  constructor() {}
+  constructor(private http: HttpClient) {
+    // Listen for real-time updates from the backend via Socket.IO
+    this.socket.on('taskAdded', (task: Task) => {
+      this.addTaskToList(task); // Add new task to the list
+    });
 
-  // Get tasks (reads from the local array)
+    this.socket.on('taskUpdated', (task: Task) => {
+      this.updateTaskInList(task); // Update task in the list
+    });
+
+    this.socket.on('taskDeleted', (task: Task) => {
+      this.deleteTaskFromList(task.id); // Remove task from the list by id
+    });
+
+    this.socket.on('connect', () => {
+      this.socketId = this.socket.id;
+    });
+  }
+
+  // Fetch tasks from the backend (initial load)
   getTasks() {
-    return this.tasksSubject.asObservable();
+      const headers = this.getHeaders(); // Get the headers from the helper method
+      const options = { headers }; // Wrap the headers in an options object
+      return this.http.get<Task[]>(this.apiUrl, options).pipe(
+        // After fetching tasks from backend, update the local task list
+        tap(tasks => this.tasksSubject.next(tasks))
+      );   
   }
 
-  // Add task (adds to the local array)
+  // Add a new task via the backend and update the local list
   addTask(task: Task) {
-    task.id = String(this.tasksSubject.value.length + 1); // Simple ID generation
-    const tasks = [...this.tasksSubject.value, task];
-    this.tasksSubject.next(tasks);
-  }
-
-  // Update task (modifies the task in the local array)
-  updateTask(task: Task) {
-    const tasks = this.tasksSubject.value.map(t =>
-      t.id === task.id ? { ...t, completed: task.completed, name: task.name } : t
+    return this.http.post<Task>(this.apiUrl, task, { headers: this.getHeaders() }).pipe(
+      tap(newTask => {
+        // Emit the new task to the server via Socket.IO
+        this.socket.emit('taskAdded', newTask);
+      })
     );
-    this.tasksSubject.next(tasks);
   }
 
-  // Delete task (removes from the local array)
+  // Update an existing task via the backend and update the local list
+  updateTask(task: Task) {
+    return this.http.put<Task>(`${this.apiUrl}/${task.id}`, task, { headers: this.getHeaders() }).pipe(
+      tap(updatedTask => {
+        // Emit the updated task to the server via Socket.IO
+        this.socket.emit('taskUpdated', updatedTask);
+      })
+    );
+  }
+
+  // Delete a task via the backend and update the local list
   deleteTask(taskId: string) {
-    const tasks = this.tasksSubject.value.filter(t => t.id !== taskId);
+    return this.http.delete<void>(`${this.apiUrl}/${taskId}`, { headers: this.getHeaders() }).pipe(
+      tap(() => {
+        // Emit task deletion event to the server via Socket.IO
+        this.socket.emit('taskDeleted', { id: taskId });
+        // Update the local task list after deletion
+        this.deleteTaskFromList(taskId);
+      })
+    );
+  }
+
+  // Helper method to add the socket id to headers
+  private getHeaders(): HttpHeaders {
+    return new HttpHeaders().set('socket-id', this.socketId || '');
+  }
+
+  // Helper methods to manage the local task list in the BehaviorSubject
+  private addTaskToList(task: Task) {
+    const tasks = [...this.tasksSubject.value, task]; // Add new task to the list
     this.tasksSubject.next(tasks);
   }
 
-  // Listen for real-time updates (mocking real-time behavior here)
-  listenForRealTimeUpdates() {
-    // In a real app, you might use WebSockets or Firebase for real-time updates
+  private updateTaskInList(updatedTask: Task) {
+    const tasks = this.tasksSubject.value.map(task =>
+      task.id === updatedTask.id ? updatedTask : task
+    );
+    this.tasksSubject.next(tasks); // Update the task in the list
   }
 
-  // Set task as the task to edit
-  setEditingTask(task: Task) {
-    this.editingTaskSubject.next(task);
+  private deleteTaskFromList(taskId: string) {
+    const tasks = this.tasksSubject.value.filter(task => task.id !== taskId);
+    this.tasksSubject.next(tasks); // Remove task from the list by id
   }
 
-  // Get the task to edit
-  getEditingTask() {
-    return this.editingTaskSubject.asObservable();
+  // Expose tasks as an observable
+  get tasks$() {
+    return this.tasksSubject.asObservable();
   }
 }

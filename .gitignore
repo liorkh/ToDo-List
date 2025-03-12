@@ -35,8 +35,21 @@ TodoList-FE/Thumbs.db
 
 # Vscode files
 TodoList-FE/.vscode/*
+TodoList-FE/package-lock.json
 
 #Backend
 
 TodoList-BE/package-lock.json
 TodoList-BE/node_modules/*
+
+TodoList-BE/.vscode/*
+TodoList-BE/dist/*
+TodoList-BE/src/*.js
+TodoList-BE/src/*.js.map
+
+
+node_modules/*
+package-lock.json
+package.json
+
+
