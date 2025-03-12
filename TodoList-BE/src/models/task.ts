@@ -1,13 +1,11 @@
 import mongoose, { Document, Types } from 'mongoose';
 
-// Define the TypeScript interface for the Task
 export interface ITask extends Document {
   title: string;
   completed: boolean;
   editing: boolean;
 }
 
-// Define the schema for the Task model
 const taskSchema = new mongoose.Schema<ITask>({
   title: { type: String, required: true },
   completed: { type: Boolean, default: false },
@@ -27,5 +25,4 @@ taskSchema.set('toJSON', {
   },
 });
 
-// Create the Task model using the schema and export it
 export const Task = mongoose.model<ITask>('Task', taskSchema);
