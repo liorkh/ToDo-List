@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config({ path: './dev.env' });
 
 const app = express();
 const server = http.createServer(app);
@@ -15,11 +15,17 @@ const io = new SocketIOServer(server);  // Now `SocketIOServer` can be called li
 app.use(cors());
 app.use(express.json());
 
+let num =6;
+let num1 =6
+let num2 =6
+let num3 =6
+
+
 // Database connection
-mongoose.connect(process.env.MONGODB_URI!, {
-  // No need for useNewUrlParser or useUnifiedTopology anymore
-})
-  .then(() => console.log('MongoDB connected'))
+mongoose.connect(process.env.MONGODB_URI)
+  .then(
+    () => console.log('MongoDB connected')
+  )
   .catch((err) => console.log(err));
 
 
@@ -30,28 +36,28 @@ const taskSchema = new mongoose.Schema({
   editing: Boolean
 });
 
-const Task = mongoose.model('Task', taskSchema);
+let num4 =6
 
-// Real-time updates
-io.on('connection', (socket) => {
-  console.log('A user connected');
+// const Task = mongoose.model('Task', taskSchema);
+
+// // Real-time updates
+// io.on('connection', (socket) => {
+//   console.log('A user connected');
   
-  socket.on('disconnect', () => {
-    console.log('User disconnected');
-  });
-});
+//   socket.on('disconnect', () => {
+//     console.log('User disconnected');
+//   });
+// });
 
-// CRUD routes
-app.post('/tasks', async (req, res) => {
-  const { title } = req.body;
-  try {
-    const newTask = new Task({ title, completed: false, editing: false });
-    await newTask.save();
-    io.emit('taskAdded', newTask);  // Emit real-time update
-    res.status(201).json(newTask);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-});
-
-// Other CRUD operations...
+// // CRUD routes
+// app.post('/tasks', async (req, res) => {
+//   const { title } = req.body;
+//   try {
+//     const newTask = new Task({ title, completed: false, editing: false });
+//     await newTask.save();
+//     io.emit('taskAdded', newTask);  // Emit real-time update
+//     res.status(201).json(newTask);
+//   } catch (err) {
+//     res.status(400).json({ message: err.message });
+//   }
+// });
