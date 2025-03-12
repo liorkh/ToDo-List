@@ -28,6 +28,4 @@ taskSchema.set('toJSON', {
 });
 
 // Create the Task model using the schema and export it
-const Task = mongoose.model<ITask>('Task', taskSchema);
-
-export default Task;
+export const Task = mongoose.model<ITask>('Task', taskSchema);
