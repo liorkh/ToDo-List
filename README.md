@@ -69,7 +69,7 @@ The following API routes are available:
 - PUT /todos/:id: Update a TODO task by ID
 - DELETE /todos/:id: Delete a TODO task by ID
 
-## Architecture Decision
+## Architecture Decisions
 - I used the *Repository Pattern* to manage database interactions. This helps keep things clean by separating data access logic from the rest of the app. It makes the code easier to maintain, test, and swap out the database with ease.
 
 - I used a *Singleton* for Socket.IO. This ensures there's only one instance of Socket.IO running, which helps avoid conflicts and keeps things efficient. It simplifies event broadcasting across clients and ensures consistent communication throughout the app.
