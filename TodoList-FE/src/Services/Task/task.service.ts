@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { io } from 'socket.io-client';
 import { Task } from '../../Models/task.model';
 
@@ -32,7 +32,7 @@ export class TaskService {
     });
   }
 
-  getTasks() {
+  getTasks(): Observable<Task[]> {
     const headers = this.getHeaders();
     const options = { headers };
     return this.http.get<Task[]>(this.apiUrl, options).pipe(
@@ -40,7 +40,7 @@ export class TaskService {
     );
   }
 
-  addTask(task: Task) {
+  addTask(task: Task): Observable<Task> {
     return this.http.post<Task>(this.apiUrl, task, { headers: this.getHeaders() }).pipe(
       tap(newTask => {
         this.socket.emit('taskAdded', newTask);
@@ -48,7 +48,7 @@ export class TaskService {
     );
   }
 
-  updateTask(task: Task) {
+  updateTask(task: Task): Observable<Task> {
     return this.http.put<Task>(`${this.apiUrl}/${task.id}`, task, { headers: this.getHeaders() }).pipe(
       tap(updatedTask => {
         this.socket.emit('taskUpdated', updatedTask);
@@ -56,11 +56,10 @@ export class TaskService {
     );
   }
 
-  deleteTask(taskId: string) {
+  deleteTask(taskId: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${taskId}`, { headers: this.getHeaders() }).pipe(
       tap(() => {
         this.socket.emit('taskDeleted', { id: taskId });
-        this.deleteTaskFromList(taskId);
       })
     );
   }
@@ -69,24 +68,20 @@ export class TaskService {
     return new HttpHeaders().set('socket-id', this.socketId || '');
   }
 
-  private addTaskToList(task: Task) {
+  private addTaskToList(task: Task): void {
     const tasks = [...this.tasksSubject.value, task];
     this.tasksSubject.next(tasks);
   }
 
-  private updateTaskInList(updatedTask: Task) {
+  private updateTaskInList(updatedTask: Task): void {
     const tasks = this.tasksSubject.value.map(task =>
       task.id === updatedTask.id ? updatedTask : task
     );
     this.tasksSubject.next(tasks);
   }
 
-  private deleteTaskFromList(taskId: string) {
+  private deleteTaskFromList(taskId: string): void {
     const tasks = this.tasksSubject.value.filter(task => task.id !== taskId);
     this.tasksSubject.next(tasks);
-  }
-
-  get tasks$() {
-    return this.tasksSubject.asObservable();
   }
 }

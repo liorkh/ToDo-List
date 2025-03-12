@@ -20,7 +20,7 @@ export class AddEditTaskComponent {
 
   saveTask() : void {
     if (this.task.title.trim()) {
-      this.taskService.addTask(this.task);
+      this.taskService.addTask(this.task).subscribe();
       this.resetForm();
     }
   }
