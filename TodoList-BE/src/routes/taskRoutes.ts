@@ -1,4 +1,3 @@
-// src/routes/taskRoutes.ts
 import express from 'express';
 import { createTask, getTasks, updateTask, deleteTask } from '../controllers/taskController';
 
@@ -7,7 +6,7 @@ const router = express.Router();
 // Task CRUD routes
 router.post('/', async (req, res) => {
     try {
-        await createTask(req, res); // Async call
+        await createTask(req, res);
     } catch (err) {
         res.status(500).json({ message: 'Something went wrong' });
     }
@@ -15,7 +14,7 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
     try {
-        await getTasks(req, res); // Async call
+        await getTasks(req, res);
     } catch (err) {
         res.status(500).json({ message: 'Something went wrong' });
     }
@@ -23,7 +22,7 @@ router.get('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     try {
-        await updateTask(req, res); // Async call
+        await updateTask(req, res);
     } catch (err) {
         res.status(500).json({ message: 'Something went wrong' });
     }
@@ -31,7 +30,7 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     try {
-        await deleteTask(req, res); // Async call
+        await deleteTask(req, res);
     } catch (err) {
         res.status(500).json({ message: 'Something went wrong' });
     }

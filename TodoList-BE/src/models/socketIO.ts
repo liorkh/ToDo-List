@@ -2,7 +2,7 @@ import { Server } from 'socket.io';
 
 let io: Server;
 
-const corsOptions = {
+export const corsOptions = {
   origin: 'http://localhost:4200', // Frontend URL (Angular)
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type'],
