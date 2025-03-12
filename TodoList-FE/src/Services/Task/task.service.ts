@@ -4,31 +4,32 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { io } from 'socket.io-client';
 import { Task } from '../../Models/task.model';
 import { config } from '../../app/config/config';
+import { TaskEvents } from '../../Enums/task-events.enum' 
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
-  private apiUrl = config.apiUrl;  // Use the apiUrl from config
-  private socket = io(config.socketUrl);  // Use the socketUrl from config
+  private apiUrl = config.apiUrl; 
+  private socket = io(config.socketUrl); 
 
   tasksSubject = new BehaviorSubject<Task[]>([]);
   socketId: string | undefined;
 
   constructor(private http: HttpClient) {
-    this.socket.on('taskAdded', (task: Task) => {
+    this.socket.on(TaskEvents.TaskAdded, (task: Task) => {
       this.addTaskToList(task);
     });
 
-    this.socket.on('taskUpdated', (task: Task) => {
+    this.socket.on(TaskEvents.TaskUpdated, (task: Task) => {
       this.updateTaskInList(task);
     });
 
-    this.socket.on('taskDeleted', (task: Task) => {
+    this.socket.on(TaskEvents.TaskDeleted, (task: Task) => {
       this.deleteTaskFromList(task.id);
     });
 
-    this.socket.on('connect', () => {
+    this.socket.on(TaskEvents.SocketConnect, () => {  
       this.socketId = this.socket.id;
     });
   }
@@ -44,7 +45,7 @@ export class TaskService {
   addTask(task: Task): Observable<Task> {
     return this.http.post<Task>(this.apiUrl, task, { headers: this.getHeaders() }).pipe(
       tap(newTask => {
-        this.socket.emit('taskAdded', newTask);
+        this.socket.emit(TaskEvents.TaskAdded, newTask);  
       })
     );
   }
@@ -52,7 +53,7 @@ export class TaskService {
   updateTask(task: Task): Observable<Task> {
     return this.http.put<Task>(`${this.apiUrl}/${task.id}`, task, { headers: this.getHeaders() }).pipe(
       tap(updatedTask => {
-        this.socket.emit('taskUpdated', updatedTask);
+        this.socket.emit(TaskEvents.TaskUpdated, updatedTask);  
       })
     );
   }
@@ -60,7 +61,7 @@ export class TaskService {
   deleteTask(taskId: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${taskId}`, { headers: this.getHeaders() }).pipe(
       tap(() => {
-        this.socket.emit('taskDeleted', { id: taskId });
+        this.socket.emit(TaskEvents.TaskDeleted, { id: taskId }); 
       })
     );
   }
