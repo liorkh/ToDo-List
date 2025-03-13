@@ -1,0 +1,55 @@
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
+TodoList-FE/dist
+TodoList-FE/tmp
+TodoList-FE/out-tsc
+TodoList-FE/bazel-out
+
+# Node
+TodoList-FE/node_modules
+TodoList-FE/npm-debug.log
+TodoList-FE/yarn-error.log
+
+# IDEs and editors
+TodoList-FE/.idea/
+TodoList-FE/.project
+TodoList-FE/.classpath
+TodoList-FE/.c9/
+TodoList-FE/*.launch
+TodoList-FE/.settings/
+TodoList-FE/*.sublime-workspace
+
+# Miscellaneous
+TodoList-FE/.angular/cache
+TodoList-FE/.sass-cache/
+TodoList-FE/connect.lock
+TodoList-FE/coverage
+TodoList-FE/libpeerconnection.log
+TodoList-FE/testem.log
+TodoList-FE/typings
+
+# System files
+TodoList-FE/.DS_Store
+TodoList-FE/Thumbs.db
+
+# Vscode files
+TodoList-FE/.vscode/*
+TodoList-FE/package-lock.json
+
+#Backend
+
+TodoList-BE/package-lock.json
+TodoList-BE/node_modules/*
+
+TodoList-BE/.vscode/*
+TodoList-BE/dist/*
+TodoList-BE/src/*.js
+TodoList-BE/src/*.js.map
+
+
+node_modules/*
+package-lock.json
+package.json
+
+
