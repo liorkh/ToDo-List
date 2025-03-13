@@ -16,7 +16,7 @@ export const createTask = async (req: Request, res: Response) => {
     const io = getSocketIO();
     io.emit(SocketEvents.TaskAdded, newTask);
 
-    res.status(201);
+    res.sendStatus(201);
   } catch (err) {
     console.error('Error creating task:', err);
     res.status(400).json({ message: err.message });
@@ -62,7 +62,7 @@ export const updateTask = async (req: Request, res: Response) => {
       });
     }
 
-    res.status(200);
+    res.sendStatus(200);
   } catch (err) {
     console.error('Error updating task:', err);
     res.status(400).json({ message: err.message });
@@ -83,7 +83,7 @@ export const deleteTask = async (req: Request, res: Response) => {
     const io = getSocketIO();
     io.emit(SocketEvents.TaskDeleted, deletedTask);
 
-    res.status(200);
+    res.sendStatus(200);
   } catch (err) {
     console.error('Error deleting task:', err);
     res.status(400).json({ message: err.message });

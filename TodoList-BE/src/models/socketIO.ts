@@ -3,14 +3,13 @@ import { Server } from 'socket.io';
 let io: Server;
 
 export const corsOptions = {
-  origin: 'http://localhost:4200', 
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type'],
+  origin: ['http://localhost:4200'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
 };
 
 export const initializeSocketIO = (server: any) => {
   if (!io) {
-    io = new Server(server, { cors: corsOptions }); 
+    io = new Server(server, { cors: corsOptions });
   }
   return io;
 };
