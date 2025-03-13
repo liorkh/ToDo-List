@@ -4,14 +4,14 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { io } from 'socket.io-client';
 import { Task } from '../../Models/task.model';
 import { config } from '../../app/config/config';
-import { TaskEvents } from '../../Enums/task-events.enum' 
+import { TaskEvents } from '../../Enums/task-events.enum'
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
-  private apiUrl = config.apiUrl; 
-  private socket = io(config.socketUrl); 
+  private apiUrl = config.apiUrl;
+  private socket = io(config.socketUrl);
 
   tasksSubject = new BehaviorSubject<Task[]>([]);
   socketId: string | undefined;
@@ -29,39 +29,27 @@ export class TaskService {
       this.deleteTaskFromList(task.id);
     });
 
-    this.socket.on(TaskEvents.SocketConnect, () => {  
+    this.socket.on(TaskEvents.SocketConnect, () => {
       this.socketId = this.socket.id;
     });
   }
 
   getTasks(): Observable<Task[]> {
     return this.http.get<Task[]>(this.apiUrl).pipe(
-      tap(tasks => this.tasksSubject.next(tasks))
+      tap((tasks: Task[]) => this.tasksSubject.next(tasks))
     );
   }
 
   addTask(task: Task): Observable<Task> {
-    return this.http.post<Task>(this.apiUrl, task).pipe(
-      tap(newTask => {
-        this.socket.emit(TaskEvents.TaskAdded, newTask);  
-      })
-    );
+    return this.http.post<Task>(this.apiUrl, task);
   }
 
   updateTask(task: Task): Observable<Task> {
-    return this.http.put<Task>(`${this.apiUrl}/${task.id}`, task, { headers: this.getHeaders() }).pipe(
-      tap(updatedTask => {
-        this.socket.emit(TaskEvents.TaskUpdated, updatedTask);  
-      })
-    );
+    return this.http.put<Task>(`${this.apiUrl}/${task.id}`, task, { headers: this.getHeaders() });
   }
 
   deleteTask(taskId: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${taskId}`).pipe(
-      tap(() => {
-        this.socket.emit(TaskEvents.TaskDeleted, { id: taskId }); 
-      })
-    );
+    return this.http.delete<void>(`${this.apiUrl}/${taskId}`);
   }
 
   private getHeaders(): HttpHeaders {
@@ -74,14 +62,14 @@ export class TaskService {
   }
 
   private updateTaskInList(updatedTask: Task): void {
-    const tasks = this.tasksSubject.value.map(task =>
+    const tasks = this.tasksSubject.value.map((task: Task) =>
       task.id === updatedTask.id ? updatedTask : task
     );
     this.tasksSubject.next(tasks);
   }
 
   private deleteTaskFromList(taskId: string): void {
-    const tasks = this.tasksSubject.value.filter(task => task.id !== taskId);
+    const tasks = this.tasksSubject.value.filter((task: Task) => task.id !== taskId);
     this.tasksSubject.next(tasks);
   }
 }

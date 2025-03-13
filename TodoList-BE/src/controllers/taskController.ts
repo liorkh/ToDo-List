@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import TaskRepository from '../repositories/taskRepository';
-import { getSocketIO } from '../models/socketIO';  
+import { getSocketIO } from '../models/socketIO';
+import SocketEvents from '../enums/SocketEvents';
 
 // Create a new task
 export const createTask = async (req: Request, res: Response) => {
@@ -11,11 +12,11 @@ export const createTask = async (req: Request, res: Response) => {
   }
 
   try {
-    const newTask = await TaskRepository.createTask(title); 
+    const newTask = await TaskRepository.createTask(title);
     const io = getSocketIO();
-    io.emit('taskAdded', newTask);  
+    io.emit(SocketEvents.TaskAdded, newTask);
 
-    res.status(201);
+    res.status(201).send();
   } catch (err) {
     console.error('Error creating task:', err);
     res.status(400).json({ message: err.message });
@@ -37,14 +38,14 @@ export const getTasks = async (req: Request, res: Response) => {
 export const updateTask = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { title, completed, editing } = req.body;
-  const socketId = req.headers['socket-id']; 
+  const socketId = req.headers['socket-id'];
 
   if (!title && completed === undefined && editing === undefined) {
     return res.status(400).json({ message: 'At least one field must be provided to update the task' });
   }
 
   try {
-    const updatedTask = await TaskRepository.updateTask(id, title, completed, editing); 
+    const updatedTask = await TaskRepository.updateTask(id, title, completed, editing);
 
     if (!updatedTask) {
       return res.status(404).json({ message: 'Task not found' });
@@ -56,12 +57,12 @@ export const updateTask = async (req: Request, res: Response) => {
     if (socketId) {
       io.sockets.sockets.forEach((socket) => {
         if (socket.id !== socketId) {
-          socket.emit('taskUpdated', updatedTask);
+          socket.emit(SocketEvents.TaskUpdated, updatedTask);
         }
       });
     }
 
-    res.status(200);
+    res.status(200).send();
   } catch (err) {
     console.error('Error updating task:', err);
     res.status(400).json({ message: err.message });
@@ -73,16 +74,16 @@ export const deleteTask = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   try {
-    const deletedTask = await TaskRepository.deleteTask(id); 
+    const deletedTask = await TaskRepository.deleteTask(id);
 
     if (!deletedTask) {
       return res.status(404).json({ message: 'Task not found' });
     }
 
     const io = getSocketIO();
-    io.emit('taskDeleted', deletedTask);
+    io.emit(SocketEvents.TaskDeleted, deletedTask);
 
-    res.status(200); 
+    res.status(200).send();
   } catch (err) {
     console.error('Error deleting task:', err);
     res.status(400).json({ message: err.message });
