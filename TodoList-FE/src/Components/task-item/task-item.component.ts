@@ -23,20 +23,22 @@ export class TaskItemComponent implements OnDestroy {
   constructor(private taskService: TaskService) { }
 
   toggleCompleted(): void {
-    const subscription = this.taskService.updateTask(this.task).subscribe();
-    this.subscriptions.push(subscription); 
+    if (!this.isEditing) {
+      const subscription = this.taskService.updateTask(this.task).subscribe();
+      this.subscriptions.push(subscription);
+    }
   }
 
   deleteTask(): void {
     const subscription = this.taskService.deleteTask(this.task.id).subscribe();
-    this.subscriptions.push(subscription);  
+    this.subscriptions.push(subscription);
   }
 
   editTask(): void {
     this.task.editing = !this.isEditing.value;
     this.isEditing.next(!this.isEditing.value);
     const subscription = this.taskService.updateTask(this.task).subscribe();
-    this.subscriptions.push(subscription);  
+    this.subscriptions.push(subscription);
   }
 
   ngOnDestroy() {
