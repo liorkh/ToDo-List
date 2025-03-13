@@ -23,10 +23,8 @@ export class TaskItemComponent implements OnDestroy {
   constructor(private taskService: TaskService) { }
 
   toggleCompleted(): void {
-    if (!this.isEditing) {
-      const subscription = this.taskService.updateTask(this.task).subscribe();
-      this.subscriptions.push(subscription);
-    }
+    const subscription = this.taskService.updateTask(this.task).subscribe();
+    this.subscriptions.push(subscription);
   }
 
   deleteTask(): void {

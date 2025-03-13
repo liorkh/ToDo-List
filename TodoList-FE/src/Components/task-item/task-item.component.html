@@ -11,9 +11,8 @@
     <button mat-raised-button (click)="deleteTask()" class="delete-btn"
       [disabled]="task.editing && !(isEditing | async)">Delete</button>
 
-    <mat-checkbox [(ngModel)]="task.completed"
-      [disabled]="task.editing && !(isEditing | async)" (change)="toggleCompleted()"
-      class="task-checkbox"></mat-checkbox>
+    <mat-checkbox [(ngModel)]="task.completed" [disabled]="(isEditing|async) || task.editing && !(isEditing | async)"
+      (change)="toggleCompleted()" class="task-checkbox"></mat-checkbox>
 
     <button mat-raised-button (click)="editTask()" class="edit-btn" [disabled]="task.editing && !(isEditing | async)">
       {{ (isEditing | async) ? 'Save' : 'Edit' }}
